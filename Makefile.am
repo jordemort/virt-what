@@ -40,6 +40,7 @@ endif
 
 TESTS = \
 	tests/test-aws-baremetal-x86.sh \
+	tests/test-aws-kvm-arm.sh \
 	tests/test-aws-kvm-x86.sh \
 	tests/test-aws-xen-x86.sh \
 	tests/test-baremetal.sh \
