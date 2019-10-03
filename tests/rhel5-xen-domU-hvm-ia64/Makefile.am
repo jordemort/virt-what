@@ -15,29 +15,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-AM_CPPFLAGS = -Wall
+CLEANFILES = *~
 
-CLEANFILES = virt-what *~
+TESTS = test.sh
 
-EXTRA_DIST = virt-what.in virt-what.pod
-
-SUBDIRS = . tests
-
-sbin_SCRIPTS = virt-what
-libexec_PROGRAMS = virt-what-cpuid-helper
-if HOST_CPU_IA64
-libexec_PROGRAMS += virt-what-ia64-xen-rdtsc-test
-endif
-
-if HAVE_POD2MAN
-
-CLEANFILES += virt-what.1 virt-what.txt
-man_MANS = virt-what.1
-
-virt-what.1: virt-what.pod
-	pod2man -c "Virtualization Support" --release "$(PACKAGE)-$(VERSION)" \
-	  $? > $@
-virt-what.txt: virt-what.pod
-	pod2text $? > $@
-
-endif
+EXTRA_DIST = \
+	test.sh \
+	proc/cpuinfo \
+	proc/self/status \
+	sbin/dmidecode \
+	sbin/uname \
+	sbin/virt-what-cpuid-helper \
+	sys/bus/xen/drivers/vbd/bind \
+	sys/bus/xen/drivers/vbd/unbind \
+	sys/bus/xen/drivers/vif/bind \
+	sys/bus/xen/drivers/vif/unbind \
+	sys/bus/xen/drivers_probe

@@ -1,12 +1,14 @@
 *~
+*.bak
 *.log
 *.trs
 *.o
 
+Makefile
+Makefile.in
+
 /virt-what-*.tar.gz
 /.deps
-/Makefile
-/Makefile.in
 /aclocal.m4
 /autom4te.cache
 /compile
