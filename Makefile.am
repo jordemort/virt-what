@@ -19,7 +19,7 @@ AM_CPPFLAGS = -Wall
 
 CLEANFILES = virt-what *~
 
-EXTRA_DIST = virt-what.in virt-what.pod
+EXTRA_DIST = .gitignore virt-what.in virt-what.pod
 
 SUBDIRS = . tests
 
