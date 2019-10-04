@@ -1,5 +1,5 @@
 /* virt-what-cpuid-helper: Are we running inside KVM or Xen HVM?
- * Copyright (C) 2008 Red Hat Inc.
+ * Copyright (C) 2008-2019 Red Hat Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,14 +21,35 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 
 #if defined(__i386__) || defined(__x86_64__)
 
-static unsigned int
-cpuid (unsigned int eax, char *sig)
+/* Known x86 hypervisor signatures.  Note that if you add a new test
+ * to virt-what.in you may need to update this list.  The signature is
+ * always 12 bytes except in the case of KVM.
+ */
+static int
+known_signature (char *sig)
 {
-  unsigned int *sig32 = (unsigned int *) sig;
+  return
+    strcmp (sig, "bhyve bhyve ") == 0 ||
+    strcmp (sig, "KVMKVMKVM") == 0 ||
+    strcmp (sig, "LKVMLKVMLKVM") == 0 ||
+    strcmp (sig, "Microsoft Hv") == 0 ||
+    strcmp (sig, "OpenBSDVMM58") == 0 ||
+    strcmp (sig, "TCGTCGTCGTCG") == 0 ||
+    strcmp (sig, "VMwareVMware") == 0 ||
+    strcmp (sig, "XenVMMXenVMM") == 0 ||
+    0;
+}
+
+static uint32_t
+cpuid (uint32_t eax, char *sig)
+{
+  uint32_t *sig32 = (uint32_t *) sig;
 
   asm volatile (
         "xchgl %%ebx,%1; xor %%ebx,%%ebx; cpuid; xchgl %%ebx,%1"
@@ -43,24 +64,32 @@ static void
 cpu_sig (void)
 {
   char sig[13];
-  unsigned int base = 0x40000000, leaf = base;
-  unsigned int max_entries;
+  const uint32_t base = 0x40000000;
+  uint32_t leaf;
 
-  memset (sig, 0, sizeof sig);
-  max_entries = cpuid (leaf, sig);
-  puts (sig);
-
-  /* Most hypervisors only have information in leaf 0x40000000, but
-   * upstream Xen contains further leaf entries (in particular when
-   * used with Viridian [HyperV] extensions).  CPUID is supposed to
-   * return the maximum leaf offset in %eax, so that's what we use,
-   * but only if it looks sensible.
+  /* Most hypervisors only have information in leaf 0x40000000.
+   *
+   * Some hypervisors have "Viridian [HyperV] extensions", and those
+   * must appear in slot 0x40000000, but they will also have the true
+   * hypervisor in a higher slot.
+   *
+   * CPUID is supposed to return the maximum leaf offset in %eax, but
+   * this is not reliable.  Instead we check the returned signatures
+   * against a known list (the others will be empty or garbage) and
+   * only print the ones we know about.  This is OK because if we add
+   * a new test in virt-what we can update the list.
+   *
+   * By searching backwards we only print the highest entry, thus
+   * ignoring Viridian for Xen (and Nutanix).  If we ever encounter a
+   * hypervisor that has more than 2 entries we may need to revisit
+   * this.
    */
-  if (max_entries > 3 && max_entries < 0x10000) {
-    for (leaf = base + 0x100; leaf <= base + max_entries; leaf += 0x100) {
-      memset (sig, 0, sizeof sig);
-      cpuid (leaf, sig);
+  for (leaf = base + 0xff00; leaf >= base; leaf -= 0x100) {
+    memset (sig, 0, sizeof sig);
+    cpuid (leaf, sig);
+    if (known_signature (sig)) {
       puts (sig);
+      break;
     }
   }
 }
