@@ -28,15 +28,16 @@
 #if defined(__i386__) || defined(__x86_64__)
 
 /* Known x86 hypervisor signatures.  Note that if you add a new test
- * to virt-what.in you may need to update this list.  The signature is
- * always 12 bytes except in the case of KVM.
+ * to virt-what.in you may need to update this list.  Note the
+ * signature is always 12 bytes long, plus we add \0 to the end to
+ * make it 13 bytes.
  */
 static int
-known_signature (char *sig)
+known_signature (const char *sig)
 {
   return
     strcmp (sig, "bhyve bhyve ") == 0 ||
-    strcmp (sig, "KVMKVMKVM") == 0 ||
+    memcmp (sig, "KVMKVMKVM\0\0\0", 12) == 0 ||
     strcmp (sig, "LKVMLKVMLKVM") == 0 ||
     strcmp (sig, "Microsoft Hv") == 0 ||
     strcmp (sig, "OpenBSDVMM58") == 0 ||
