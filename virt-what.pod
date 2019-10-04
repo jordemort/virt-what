@@ -177,6 +177,12 @@ is lkvm (a.k.a kvmtool).
 
 Status: contributed by Andrew Jones
 
+=item B<nutanix_ahv>
+
+The guest is running inside Nutanix Acropolis Hypervisor (AHV).
+
+Status: confirmed by RWMJ.
+
 =item B<openvz>
 
 The guest appears to be running inside an OpenVZ or Virtuozzo

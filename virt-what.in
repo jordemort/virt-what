@@ -1,6 +1,6 @@
 #!/bin/sh -
 # @configure_input@
-# Copyright (C) 2008-2017 Red Hat Inc.
+# Copyright (C) 2008-2019 Red Hat Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -217,6 +217,14 @@ fi
 # Check for Parallels.
 if echo "$dmi" | grep -q 'Vendor: Parallels'; then
     echo parallels
+    skip_qemu_kvm=true
+fi
+
+# Check for Nutanix AHV.
+# This is sufficiently different from KVM and has Viridian extensions,
+# so skip the KVM test.
+if echo "$dmi" | grep -q 'Manufacturer: Nutanix'; then
+    echo nutanix_ahv
     skip_qemu_kvm=true
 fi
 

@@ -51,6 +51,7 @@ tests="\
 	lkvm-arm \
 	lx86 \
 	lxc \
+	nutanix-ahv \
 	parallels-desktop \
 	ppc64-baremetal \
 	ppc64-kvm \
@@ -93,6 +94,7 @@ AC_CONFIG_FILES([Makefile
 	         tests/lkvm-arm/Makefile
 	         tests/lx86/Makefile
 	         tests/lxc/Makefile
+	         tests/nutanix-ahv/Makefile
 	         tests/parallels-desktop/Makefile
 	         tests/ppc64-baremetal/Makefile
 	         tests/ppc64-kvm/Makefile
