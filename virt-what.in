@@ -132,7 +132,8 @@ fi
 # The negative check for cpuid is to distinguish this from Hyper-V
 # which also has the same manufacturer string in the SM-BIOS data.
 if [ "$cpuid" != "Microsoft Hv" ] &&
-    echo "$dmi" | grep -q 'Manufacturer: Microsoft Corporation'; then
+    echo "$dmi" | grep -q 'Manufacturer: Microsoft Corporation' &&
+    echo "$dmi" | grep -q 'Product Name: Virtual Machine'; then
     echo virtualpc
 fi
 
