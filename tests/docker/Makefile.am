@@ -24,6 +24,7 @@ EXTRA_DIST = \
 	.dockerenv \
 	.dockerinit \
 	proc/cpuinfo \
+	proc/self/cgroup \
 	proc/self/status \
 	sbin/dmidecode \
 	sbin/uname \

@@ -345,7 +345,8 @@ if ! "$skip_lkvm"; then
 fi
 
 # Check for Docker.
-if [ -f "${root}/.dockerenv" ] || [ -f "${root}/.dockerinit" ]; then
+if [ -f "${root}/.dockerenv" ] || [ -f "${root}/.dockerinit" ] || \
+   grep -qF /docker/ "${root}/proc/self/cgroup" 2>/dev/null; then
     echo docker
 fi
 
