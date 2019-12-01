@@ -345,7 +345,7 @@ if ! "$skip_lkvm"; then
 fi
 
 # Check for Docker.
-if [ -f "${root}/.dockerinit" ]; then
+if [ -f "${root}/.dockerenv" ] || [ -f "${root}/.dockerinit" ]; then
     echo docker
 fi
 

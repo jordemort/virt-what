@@ -21,6 +21,7 @@ TESTS = test.sh
 
 EXTRA_DIST = \
 	test.sh \
+	.dockerenv \
 	.dockerinit \
 	proc/cpuinfo \
 	proc/self/status \
