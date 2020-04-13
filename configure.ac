@@ -53,6 +53,7 @@ tests="\
 	lxc \
 	nutanix-ahv \
 	parallels-desktop \
+	podman \
 	ppc64-baremetal \
 	ppc64-kvm \
 	ppc64-lpar-dedicated \
@@ -96,6 +97,7 @@ AC_CONFIG_FILES([Makefile
 	         tests/lxc/Makefile
 	         tests/nutanix-ahv/Makefile
 	         tests/parallels-desktop/Makefile
+	         tests/podman/Makefile
 	         tests/ppc64-baremetal/Makefile
 	         tests/ppc64-kvm/Makefile
 	         tests/ppc64-lpar-dedicated/Makefile

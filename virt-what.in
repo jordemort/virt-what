@@ -165,7 +165,7 @@ fi
 # Added by Marc Fournier
 
 if [ -e "${root}/proc/1/environ" ] &&
-    cat "${root}/proc/1/environ" | tr '\000' '\n' | grep -Eiq '^container='; then
+    cat "${root}/proc/1/environ" | tr '\000' '\n' | grep -Eiq '^container=lxc'; then
     echo lxc
 fi
 
@@ -348,6 +348,14 @@ fi
 if [ -f "${root}/.dockerenv" ] || [ -f "${root}/.dockerinit" ] || \
    grep -qF /docker/ "${root}/proc/self/cgroup" 2>/dev/null; then
     echo docker
+fi
+
+# Check for Podman.
+if [ -e "${root}/proc/1/environ" ] &&
+    cat "${root}/proc/1/environ" | tr '\000' '\n' | grep -Eiq '^container=podman'; then
+    echo podman
+elif grep -qF /libpod- "${root}/proc/self/cgroup" 2>/dev/null; then
+    echo podman
 fi
 
 # Check ppc64 lpar, kvm or powerkvm

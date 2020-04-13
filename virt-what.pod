@@ -204,6 +204,12 @@ The guest is running inside Parallels Virtual Platform
 
 Status: contributed by Justin Clift
 
+=item B<podman>
+
+This is a Podman container.
+
+Status: contributed by Jordan Webb
+
 =item B<powervm_lx86>
 
 The guest is running inside IBM PowerVM Lx86 Linux/x86 emulator.
